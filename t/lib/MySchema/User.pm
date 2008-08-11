@@ -9,9 +9,9 @@ __PACKAGE__->load_components(qw/ Core /);
 __PACKAGE__->table("user");
 
 __PACKAGE__->add_columns(
-    id     => { data_type => "INTEGER" },
-    master => { data_type => "INTEGER" },
-    name   => { data_type => "TEXT" },
+    id     => { data_type => "INTEGER", is_nullable => 0 },
+    master => { data_type => "INTEGER", is_nullable => 0 },
+    name   => { data_type => "TEXT", is_nullable => 0 },
     title  => { data_type => "TEXT" },
 );
 
@@ -22,6 +22,8 @@ __PACKAGE__->belongs_to( master => 'MySchema::Master', 'id' );
 __PACKAGE__->has_many( addresses => 'MySchema::Address', 'user' );
 
 __PACKAGE__->has_many( user_bands => 'MySchema::UserBand', 'user' );
+
+__PACKAGE__->has_many( hasmanys => 'MySchema::HasMany', 'user' );
 
 __PACKAGE__->many_to_many( bands => 'user_bands', 'band' );
 
@@ -48,6 +50,18 @@ sub fullname {
     my $name  = $self->get_column('name');
     
     return join ' ', grep {defined} $title, $name;
+}
+
+sub foo {
+    my ($self) = @_;
+    
+    my $row = $self->find_or_new_related( 'hasmanys', { key => 'foo' } );
+    
+    if ( @_ > 1 ) {
+        $row->update(@_);
+    }
+    
+    return $row;
 }
 
 1;

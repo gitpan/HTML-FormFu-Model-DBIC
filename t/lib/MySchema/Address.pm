@@ -9,9 +9,10 @@ __PACKAGE__->load_components(qw/ Core /);
 __PACKAGE__->table("address");
 
 __PACKAGE__->add_columns(
-    id        => { data_type => "INTEGER" },
-    user      => { data_type => "INTEGER" },
-    address   => { data_type => "TEXT" },
+    id        => { data_type => "INTEGER", is_nullable => 0 },
+    user      => { data_type => "INTEGER", is_nullable => 0 },
+    my_label  => { data_type => "TEXT" },
+    address   => { data_type => "TEXT", is_nullable => 0 },
 );
 
 __PACKAGE__->set_primary_key("id");
