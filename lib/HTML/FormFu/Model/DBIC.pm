@@ -8,7 +8,7 @@ use Scalar::Util qw( blessed );
 use Storable qw( dclone );
 use Carp qw( croak );
 
-our $VERSION = '0.03002';
+our $VERSION = '0.03003';
 $VERSION = eval $VERSION;
 
 # sub _compatible_config() is only required as long as we support the legacy
@@ -38,9 +38,9 @@ sub _compatible_attrs {
 
         return _merge_hashes( $config, $dbic );
     }
-    
+
     $config->{new_empty_row} ||= $config->{new_empty_row_multi};
-    
+
     return $config;
 }
 
@@ -231,7 +231,7 @@ sub _fill_nested {
     my ( $self, $base, $dbic ) = @_;
 
     for my $block ( @{ $base->get_all_elements } ) {
-        next if $block->is_field;
+        next if $block->is_field && !$block->is_block;
         next if !$block->can('nested_name');
 
         my $config = _compatible_config($block);
@@ -969,8 +969,7 @@ set C<< $field->model_config->{delete_if_empty} >> to true.
           - type: Text
             name: review
             model_config:
-              dbic:
-                delete_if_empty: 1
+              delete_if_empty: 1
 
 =head3 has_many and many_to_many relationships
 
@@ -995,8 +994,7 @@ to be added.
       - type: Repeatable
         nested_name: authors
         model_config:
-          dbic: 
-            new_empty_row: author
+          new_empty_row: author
         
         elements:
           - type: Hidden
@@ -1008,7 +1006,7 @@ to be added.
 If you want to add more than one new row you can use
 C<< $block->model_config->{new_empty_row_multi} >> instead of
 C<< $block->model_config->{new_empty_row} >>. To limit the maximum number of new 
-rows put a L<range|HTML::FormFu::Constraints::Range> constraint on the
+rows put a L<range|HTML::FormFu::Constraint::Range> constraint on the
 C<count> field.
 
     ---
@@ -1016,8 +1014,7 @@ C<count> field.
       - type: Repeatable
         nested_name: authors
         model_config:
-          dbic: 
-            new_empty_row_multi: author
+          new_empty_row_multi: author
         
         elements:
           - type: Hidden
@@ -1044,8 +1041,7 @@ field.
       - type: Repeatable
         nested_name: authors
         model_config:
-          dbic:
-            delete_if_true: delete
+          delete_if_true: delete
         
         elements:
           - type: Hidden
@@ -1076,8 +1072,7 @@ primary key, set C<< $field->model_config->{default_column} >>.
         - type: Checkboxgroup
           name: authors
           model_config:
-            dbic:
-              default_column: foo
+            default_column: foo
 
 
 =head3 non-column accessors
@@ -1091,8 +1086,7 @@ C<< $field->model_config->{accessor} >>.
       - type: Text
         name: foo
         model_config:
-          dbic:
-            accessor: method_name
+          accessor: method_name
 
 =head2 update
 
