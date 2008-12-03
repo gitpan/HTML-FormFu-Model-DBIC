@@ -1,11 +1,8 @@
 Changes
-inc/Module/AutoInstall.pm
 inc/Module/Install.pm
-inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
-inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
@@ -22,6 +19,10 @@ t/default_values/basic_nested.t
 t/default_values/basic_nested.yml
 t/default_values/belongs_to_lookup_table.t
 t/default_values/belongs_to_lookup_table.yml
+t/default_values/belongs_to_lookup_table_combobox.t
+t/default_values/belongs_to_lookup_table_combobox.yml
+t/default_values/has_many_combobox.t
+t/default_values/has_many_combobox.yml
 t/default_values/has_many_repeatable.t
 t/default_values/has_many_repeatable.yml
 t/default_values/has_many_repeatable_label.t
@@ -151,10 +152,16 @@ t/lib/MySchema/User.pm
 t/lib/MySchema/UserBand.pm
 t/options_from_model/belongs_to.t
 t/options_from_model/belongs_to.yml
+t/options_from_model/belongs_to_combobox.t
+t/options_from_model/belongs_to_combobox.yml
 t/options_from_model/belongs_to_config_zero.t
 t/options_from_model/belongs_to_config_zero.yml
+t/options_from_model/belongs_to_config_zero_combobox.t
+t/options_from_model/belongs_to_config_zero_combobox.yml
 t/options_from_model/condition_from_stash.t
 t/options_from_model/condition_from_stash.yml
+t/options_from_model/condition_from_stash_combobox.t
+t/options_from_model/condition_from_stash_combobox.yml
 t/options_from_model/constraint_autoset.t
 t/options_from_model/constraint_autoset.yml
 t/options_from_model/many_to_many_select.t
@@ -164,6 +171,7 @@ t/update/basic.yml
 t/update/basic_create.t
 t/update/basic_update.t
 t/update/belongs_to.t
+t/update/belongs_to_combobox.t
 t/update/column_without_field.t
 t/update/column_without_field.yml
 t/update/has_many_repeatable.t
@@ -203,3 +211,6 @@ t/update/opt_accessor.yml
 t/update/opt_accessor_nested.t
 t/update/opt_accessor_nested.yml
 t/update/unchecked_not_null_checkbox.t
+t/x_roundtrip/checkbox.yml
+t/x_roundtrip/checkbox_false2true.t
+t/x_roundtrip/checkbox_true2false.t
