@@ -19,9 +19,9 @@ requires:
   DBD::SQLite: 0
   DBIx::Class: 0.08002
   DateTime::Format::MySQL: 0
-  HTML::FormFu: 0.03003
+  HTML::FormFu: 0.03007
   Task::Weaken: 0
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.03006
+version: 0.03007
