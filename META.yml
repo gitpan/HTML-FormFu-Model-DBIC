@@ -3,9 +3,12 @@ abstract: 'Integrate HTML::FormFu with DBIx::Class'
 author:
   - 'Carl Franks'
 build_requires:
+  ExtUtils::MakeMaker: 6.42
   Test::MockObject: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.77'
+generated_by: 'Module::Install version 0.87'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,13 +18,15 @@ no_index:
   directory:
     - inc
     - t
+    - xt
 requires:
   DBD::SQLite: 0
   DBIx::Class: 0.08002
   DateTime::Format::MySQL: 0
   HTML::FormFu: 0.03007
+  List::MoreUtils: 0
   Task::Weaken: 0
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.03007
+version: 0.04002

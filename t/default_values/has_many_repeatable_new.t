@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More tests => 12;
 
 use HTML::FormFu;
 use lib 't/lib';
@@ -24,7 +24,6 @@ $master->create_related( 'user', {
         addresses => [ { address => 'somewhere', } ] } );
 
 $master->create_related( 'user', { name => 'filler2', } );
-
 $master->create_related( 'user', { name => 'filler3', } );
 
 # row we're going to use
@@ -40,13 +39,13 @@ $master->create_related( 'user', {
 
     is( $form->get_field('id')->default,    '4' );
     is( $form->get_field('name')->default,  'nick' );
-    is( $form->get_field('count')->default, '3' );
+    is( $form->get_field('count')->default, '4' );
 
     my $block = $form->get_all_element( { nested_name => 'addresses' } );
 
     my @reps = @{ $block->get_elements };
 
-    is( scalar @reps, 3 );
+    is( scalar @reps, 4 );
 
     is( $reps[0]->get_field('id_1')->default,      '2' );
     is( $reps[0]->get_field('address_1')->default, 'home' );
@@ -56,5 +55,8 @@ $master->create_related( 'user', {
 
     is( $reps[2]->get_field('id_3')->default,      undef );
     is( $reps[2]->get_field('address_3')->default, undef );
+    
+    is( $reps[3]->get_field('id_4')->default,      undef );
+    is( $reps[3]->get_field('address_4')->default, undef );
 }
 
