@@ -75,7 +75,7 @@ SQL
     $dbh->do( <<SQL );
 CREATE TABLE user (
   id     INTEGER PRIMARY KEY NOT NULL,
-  master INTEGER NOT NULL,
+  master INTEGER,
   name   TEXT NOT NULL,
   title  TEXT
 );

@@ -23,10 +23,10 @@ requires:
   DBD::SQLite: 0
   DBIx::Class: 0.08002
   DateTime::Format::MySQL: 0
-  HTML::FormFu: 0.03007
+  HTML::FormFu: 0.04002
   List::MoreUtils: 0
   Task::Weaken: 0
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.04002
+version: 0.04003
