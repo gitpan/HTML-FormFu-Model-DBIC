@@ -196,6 +196,8 @@ t/update/basic_create.t
 t/update/basic_update.t
 t/update/belongs_to.t
 t/update/belongs_to_combobox.t
+t/update/belongs_to_select.t
+t/update/belongs_to_select.yml
 t/update/column_without_field.t
 t/update/column_without_field.yml
 t/update/has_many_repeatable.t
@@ -221,6 +223,8 @@ t/update/has_one.yml
 t/update/has_one_create.t
 t/update/has_one_no_id.t
 t/update/has_one_no_id.yml
+t/update/has_one_select.t
+t/update/has_one_select.yml
 t/update/ignore_if_empty.t
 t/update/ignore_if_empty.yml
 t/update/many_to_many-has_many.t
@@ -230,6 +234,7 @@ t/update/many_to_many_repeatable_new.t
 t/update/many_to_many_repeatable_new.yml
 t/update/many_to_many_select.t
 t/update/many_to_many_select.yml
+t/update/many_to_many_select_additive.yml
 t/update/many_to_many_select_unselected.t
 t/update/methods.t
 t/update/methods.yml

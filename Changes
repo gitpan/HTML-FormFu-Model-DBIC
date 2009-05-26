@@ -1,3 +1,10 @@
+0.05000 2009-05-26
+
+    - Fix update() "primary key and the foreign key may not be the same column"
+      errors.
+    
+    - options_from_model() 'label_col' works again with non-column accessors.
+
 0.04003 2009-05-10
 
     - Bumped prerequisite HTML-FormFu to 0.04002
@@ -17,6 +24,16 @@
     - New 'ignore_if_empty' model_config option.
     
     - Support nested Repeatable elements.
+
+0.04000 2009-04-22
+
+    - New "empty_rows" setting - replaces now deprecated "new_empty_row".
+    
+    - New "new_rows_max" setting - replaces now deprecated "new_empty_row_multi".
+    
+    - Previously, the field named in "new_empty_row" was used to determine
+      whether to insert a new row. - Now we simply insert a new row if any
+      field within the Repeatable block has a submitted value.
 
 0.03007 2008-12-08
 
