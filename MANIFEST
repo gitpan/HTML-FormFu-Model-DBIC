@@ -158,6 +158,7 @@ t/deprecated-save_to_model/unchecked_not_null_checkbox.t
 t/lib/DBICTestLib.pm
 t/lib/HTMLFormFu/I18N.pm
 t/lib/HTMLFormFu/I18N/en.pm
+t/lib/HTMLFormFu/MockContext.pm
 t/lib/MySchema.pm
 t/lib/MySchema/Address.pm
 t/lib/MySchema/Band.pm

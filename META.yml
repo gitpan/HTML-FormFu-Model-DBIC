@@ -5,7 +5,6 @@ author:
 build_requires:
   DateTime::Format::SQLite: 0
   ExtUtils::MakeMaker: 6.42
-  Test::MockObject: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
@@ -28,4 +27,4 @@ requires:
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.05001
+version: 0.05002
