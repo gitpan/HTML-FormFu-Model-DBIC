@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 3;
 
 use HTML::FormFu;
 use lib 't/lib';
@@ -9,7 +9,7 @@ use MySchema;
 
 my $form = HTML::FormFu->new;
 
-$form->load_config_file('t/deprecated-save_to_model/many_to_many_select.yml');
+$form->load_config_file('t/update/many_to_many_checkboxgroup.yml');
 
 my $schema = new_schema();
 
@@ -56,13 +56,7 @@ my $band1;
 
     my $row = $schema->resultset('User')->find(2);
 
-    {
-        my $warnings;
-        local $SIG{ __WARN__ } = sub { $warnings++ };
-
-        $form->save_to_model($row);
-        ok( $warnings, 'warning thrown' );
-    }
+    $form->model->update($row);
 }
 
 {

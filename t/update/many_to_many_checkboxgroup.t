@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 use HTML::FormFu;
 use lib 't/lib';
@@ -9,7 +9,7 @@ use MySchema;
 
 my $form = HTML::FormFu->new;
 
-$form->load_config_file('t/deprecated-save_to_model/many_to_many_select.yml');
+$form->load_config_file('t/update/many_to_many_checkboxgroup.yml');
 
 my $schema = new_schema();
 
@@ -48,21 +48,14 @@ my $band1;
     $form->process( {
             id    => 2,
             name  => 'Paul McCartney',
-            # no bands - if you unselect all options,
-            # the browser doesn't submit that param at all
+            bands => [ 1, 3 ],
         } );
 
     ok( $form->submitted_and_valid );
 
     my $row = $schema->resultset('User')->find(2);
 
-    {
-        my $warnings;
-        local $SIG{ __WARN__ } = sub { $warnings++ };
-
-        $form->save_to_model($row);
-        ok( $warnings, 'warning thrown' );
-    }
+    $form->model->update($row);
 }
 
 {
@@ -72,6 +65,11 @@ my $band1;
 
     my @bands = $row->bands->all;
 
-    is( scalar(@bands), 0 );
+    is( scalar @bands, 2 );
+
+    my @id = sort map { $_->id } @bands;
+
+    is( $id[0], 1 );
+    is( $id[1], 3 );
 }
 

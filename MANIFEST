@@ -11,6 +11,7 @@ lib/HTML/FormFu/Model/DBIC.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+README
 t/create/basic.t
 t/create/basic.yml
 t/default_values/basic.t
@@ -45,6 +46,8 @@ t/default_values/label.t
 t/default_values/label.yml
 t/default_values/many_to_many-has_many.t
 t/default_values/many_to_many-has_many.yml
+t/default_values/many_to_many_checkboxgroup.t
+t/default_values/many_to_many_checkboxgroup.yml
 t/default_values/many_to_many_repeatable.t
 t/default_values/many_to_many_repeatable.yml
 t/default_values/many_to_many_repeatable_nested.t
@@ -232,6 +235,9 @@ t/update/has_one_select.yml
 t/update/ignore_if_empty.t
 t/update/ignore_if_empty.yml
 t/update/many_to_many-has_many.t
+t/update/many_to_many_checkboxgroup.t
+t/update/many_to_many_checkboxgroup.yml
+t/update/many_to_many_checkboxgroup_unselected.t
 t/update/many_to_many_repeatable.t
 t/update/many_to_many_repeatable.yml
 t/update/many_to_many_repeatable_new.t

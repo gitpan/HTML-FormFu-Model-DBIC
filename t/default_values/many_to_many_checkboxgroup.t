@@ -9,7 +9,7 @@ use MySchema;
 
 my $form = HTML::FormFu->new;
 
-$form->load_config_file('t/default_values/many_to_many_select.yml');
+$form->load_config_file('t/default_values/many_to_many_checkboxgroup.yml');
 
 my $schema = new_schema();
 
