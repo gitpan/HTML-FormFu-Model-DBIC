@@ -316,46 +316,47 @@ BUILDING FORMS
     The field's name must be set to the name of the "many_to_many"
     relationship.
 
-    default_column
-        If you want to search / associate the related table by a column
-        other it's primary key, set
-        "$field->model_config->{default_column}".
+   default_column
+    If you want to search / associate the related table by a column other
+    it's primary key, set "$field->model_config->{default_column}".
 
-            ---
-            element:
-                - type: Checkboxgroup
-                  name: authors
-                  model_config:
-                    default_column: foo
+        ---
+        element:
+            - type: Checkboxgroup
+              name: authors
+              model_config:
+                default_column: foo
 
-        If you want to set columns on the link table you can do so if you
-        add a "link_values" attribute to "model_config":
+   link_values
+    If you want to set columns on the link table you can do so if you add a
+    "link_values" attribute to "model_config":
 
-            ---
-            element:
-                - type: Checkboxgroup
-                  name: authors
-                  model_config:
-                    link_values:
-                      foo: bar
+        ---
+        element:
+            - type: Checkboxgroup
+              name: authors
+              model_config:
+                link_values:
+                  foo: bar
 
-        The default implementation will first remove all related objects and
-        set the new ones (see
-        <http://search.cpan.org/perldoc?DBIx::Class::Relationship::Base#set_
-        $rel>). If you want to add the selected objects to the current set
-        of objects set "additive" in the "model_config".
+   additive
+    The default implementation will first remove all related objects and set
+    the new ones (see
+    <http://search.cpan.org/perldoc?DBIx::Class::Relationship::Base#set_$rel
+    >). If you want to add the selected objects to the current set of
+    objects set "additive" in the "model_config".
 
-            ---
-            element:
-                - type: Checkboxgroup
-                  name: authors
-                  model_config:
-                    additive: 1
-                    options_from_model: 0
+        ---
+        element:
+            - type: Checkboxgroup
+              name: authors
+              model_config:
+                additive: 1
+                options_from_model: 0
 
-        (<options_from_model> is set to 0 because this "options_from_model"
-        will try to fetch all objects from the result class "Authors" if
-        "model_config" is specified without a "resultset" attribute.)
+    "options_from_model" is set to 0 because it will try to fetch all
+    objects from the result class "Authors" if "model_config" is specified
+    without a "resultset" attribute.)
 
 COMMON ARGUMENTS
     The following items are supported in the optional "config" hash-ref
@@ -535,7 +536,7 @@ CONFIGURATION
             model_config:
               localize_label: 1
 
-    You can set a "condition", which will be passed as the 1st arguement to
+    You can set a "condition", which will be passed as the 1st argument to
     "search" in DBIx::Class::ResultSet.
 
         element:
@@ -546,7 +547,35 @@ CONFIGURATION
               condition:
                 type: is_foo
 
-    You can set "attributes", which will be passed as the 2nd arguement to
+    You can set a "condition_from_stash", which will be passed as the 1st
+    argument to "search" in DBIx::Class::ResultSet.
+
+    "key" is the column-name to be passed to search, and "stash_key" is the
+    name of a key on the form stash from which the value to be passed to
+    search is found.
+
+        element:
+          - type: Select
+            name: foo
+            model_config:
+              resultset: TableClass
+              condition_from_stash:
+                key: stash_key
+
+    Is comparable to:
+
+        $form->element({
+            type => 'Select',
+            name => 'foo',
+            model_config => {
+                resultset => 'TableClass',
+                condition => {
+                    key => $form->stash->{stash_key}
+                }
+            }
+        })
+
+    You can set "attributes", which will be passed as the 2nd argument to
     "search" in DBIx::Class::ResultSet.
 
 FAQ
@@ -574,28 +603,6 @@ FAQ
 
     See HTML::FormFu::Element::Label.
 
-DEPRECATED
-  new_empty_row
-    Is deprecated and provided only for backwards compatability. Will be
-    removed at some point in the future.
-
-    See "empty_rows" in "Config options for Repeatable blocks" instead.
-
-  new_empty_row_multi
-    Is deprecated and provided only for backwards compatability. Will be
-    removed at some point in the future.
-
-    See "new_rows_max" in "Config options for Repeatable blocks" instead.
-
-  Range constraint
-    The suggestion to use a "Range" constraint on the "count" field to limit
-    the number of repetitions of a Repeatable block, has been withdrawn.
-
-    This was only useful in the case that there were no initial rows to be
-    edited, otherwise the "max()" value could not be known ahead of time.
-
-    See "empty_rows" in "Config options for Repeatable blocks" instead.
-
 CAVEATS
     To ensure your column's inflators and deflators are called, we have to
     get / set values using their named methods, and not with "get_column" /
@@ -604,6 +611,16 @@ CAVEATS
     Because of this, beware of having column names which clash with
     DBIx::Class built-in method-names, such as "delete". - It will have
     obviously undesirable results!
+
+REMOVED METHODS
+  new_empty_row
+    See "empty_rows" in "Config options for Repeatable blocks" instead.
+
+  new_empty_row_multi
+    See "new_rows_max" in "Config options for Repeatable blocks" instead.
+
+  Range constraint
+    See "empty_rows" in "Config options for Repeatable blocks" instead.
 
 SUPPORT
     Project Page:
@@ -662,14 +679,4 @@ COPYRIGHT AND LICENSE
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself, either Perl version 5.8.8 or, at
     your option, any later version of Perl 5 you may have available.
-
-POD ERRORS
-    Hey! The above document had some coding errors, which are explained
-    below:
-
-    Around line 1403:
-        '=item' outside of any '=over'
-
-    Around line 1444:
-        You forgot a '=back' before '=head1'
 
