@@ -23,7 +23,7 @@ no_index:
 requires:
   DBD::SQLite: 0
   DBIx::Class: 0.08108
-  HTML::FormFu: 0.05000
+  HTML::FormFu: 0.09000
   List::MoreUtils: 0
   Task::Weaken: 0
   YAML::Syck: 0
@@ -31,4 +31,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://html-formfu.googlecode.com/svn/trunk/HTML-FormFu-Model-DBIC
-version: 0.08002
+version: 0.09000

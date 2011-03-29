@@ -1,12 +1,16 @@
 package HTML::FormFu::Constraint::DBIC::Unique;
+use Moose;
 
-use strict;
-use warnings;
-use base 'HTML::FormFu::Constraint';
+extends 'HTML::FormFu::Constraint';
 
 use Carp qw( carp croak );
 
-__PACKAGE__->mk_accessors(qw/ model resultset column self_stash_key others /);
+has model          => ( is => 'rw', traits  => ['Chained'] );
+has resultset      => ( is => 'rw', traits  => ['Chained'] );
+has column         => ( is => 'rw', traits  => ['Chained'] );
+has method_name    => ( is => 'rw', traits  => ['Chained'] );
+has self_stash_key => ( is => 'rw', traits  => ['Chained'] );
+has others         => ( is => 'rw', traits  => ['Chained'] );
 
 sub constrain_value {
     my ( $self, $value ) = @_;
@@ -50,44 +54,66 @@ sub constrain_value {
         croak 'could not find DBIC resultset';
     }
 
-    my $column = $self->column || $self->parent->name;
-    my %others;
-    if ( $self->others ) {
-        my @others = ref $self->others ? @{ $self->others }
-                       : $self->others;
+    if ( my $method_name = $self->method_name ) {
+		# warn  "using $method_name to look for $value";
 
-        my $param = $self->form->input;
-        %others = map { $_ => $param->{$_} }
-                  grep { defined $param->{$_} && $param->{$_} ne q{} } @others;
+		# need to be able to tell $method_name about record on the form stash
+		my $pk_val;
+
+		if ( defined( my $self_stash_key = $self->self_stash_key ) ) {
+
+			if ( defined( my $self_stash = $stash->{ $self_stash_key } ) ) {
+
+				my ($pk) = $resultset->result_source->primary_columns;
+				
+				$pk_val = $self_stash->$pk;
+			}
+		}
+
+    	return $resultset->$method_name( $value, $pk_val );
+    } 
+    else {
+
+		my $column = $self->column || $self->parent->name;
+		my %others;
+		if ( $self->others ) {
+			my @others = ref $self->others ? @{ $self->others }
+						   : $self->others;
+	
+			my $param = $self->form->input;
+			%others = map { $_ => $param->{$_} }
+					  grep { defined $param->{$_} && $param->{$_} ne q{} } @others;
+	
+		}
+	
+		my $existing_row = eval {
+			$resultset->find( { %others, $column => $value } );
+		};
+		
+		if ( my $error = $@ ) {
+			# warn and die, as errors are swallowed by HTML-FormFu
+			carp  $error;
+			croak $error;
+		}
+	
+		# if a row exists, first check whether it matches a known object on the
+		# form stash
+	
+		if ( $existing_row && defined( my $self_stash_key = $self->self_stash_key ) ) {
+			
+			if ( defined( my $self_stash = $stash->{ $self_stash_key } ) ) {
+				
+				my ($pk) = $resultset->result_source->primary_columns;
+				
+				if ( $existing_row->$pk eq $self_stash->$pk ) {
+					return 1;
+				}
+			}
+		}
+	
+		return !$existing_row;
 
     }
-
-    my $existing_row = eval {
-        $resultset->find( { %others, $column => $value } );
-    };
-    
-    if ( my $error = $@ ) {
-        # warn and die, as errors are swallowed by HTML-FormFu
-        carp  $error;
-        croak $error;
-    }
-
-    # if a row exists, first check whether it matches a known object on the
-    # form stash
-
-    if ( $existing_row && defined( my $self_stash_key = $self->self_stash_key ) ) {
-        
-        if ( defined( my $self_stash = $stash->{ $self_stash_key } ) ) {
-            
-            my ($pk) = $resultset->result_source->primary_columns;
-            
-            if ( $existing_row->$pk eq $self_stash->$pk ) {
-                return 1;
-            }
-        }
-    }
-
-    return !$existing_row;
 }
 
 1;
@@ -185,6 +211,24 @@ more than one column. For example, if a database key consists of
           - type:       DBIC::Unique
             resultset:  ControlledVocab
             others:     category
+
+=head2 method_name
+
+Name of a method which will be called on the resultset. The method is passed
+two argument; the value of the field, and the primary key value (usually `id`)
+of the record in the form stash (as defined by self_stash_key). An example 
+config might be:
+
+    ---
+    elements: 
+      - type: text
+        name: user
+        constraints: 
+          - Required
+          - type: DBIC::Unique
+            model: DBIC::User
+            method_name: is_username_available
+
 
 =head2 SEE ALSO
 

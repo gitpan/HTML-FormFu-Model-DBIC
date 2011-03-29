@@ -16,6 +16,7 @@ README
 t/constraints/dbic_unique.t
 t/constraints/dbic_unique.yml
 t/constraints/dbic_unique_column.yml
+t/constraints/dbic_unique_method.yml
 t/constraints/dbic_unique_others.yml
 t/create/basic.t
 t/create/basic.yml
@@ -94,6 +95,7 @@ t/lib/MySchema/Type.pm
 t/lib/MySchema/Type2.pm
 t/lib/MySchema/User.pm
 t/lib/MySchema/UserBand.pm
+t/lib/MySchemaRS/User.pm
 t/options_from_model/belongs_to.t
 t/options_from_model/belongs_to.yml
 t/options_from_model/belongs_to_combobox.t
@@ -108,6 +110,8 @@ t/options_from_model/condition_from_stash.t
 t/options_from_model/condition_from_stash.yml
 t/options_from_model/condition_from_stash_combobox.t
 t/options_from_model/condition_from_stash_combobox.yml
+t/options_from_model/condition_from_stash_combobox_complex.t
+t/options_from_model/condition_from_stash_complex.t
 t/options_from_model/constraint_autoset.t
 t/options_from_model/constraint_autoset.yml
 t/options_from_model/has_many_repeatable_select.t
