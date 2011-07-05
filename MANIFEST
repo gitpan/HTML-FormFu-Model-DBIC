@@ -16,6 +16,7 @@ README
 t/constraints/dbic_unique.t
 t/constraints/dbic_unique.yml
 t/constraints/dbic_unique_column.yml
+t/constraints/dbic_unique_id_field.yml
 t/constraints/dbic_unique_method.yml
 t/constraints/dbic_unique_others.yml
 t/create/basic.t
@@ -85,6 +86,7 @@ t/lib/MySchema.pm
 t/lib/MySchema/Address.pm
 t/lib/MySchema/Band.pm
 t/lib/MySchema/HasMany.pm
+t/lib/MySchema/ManagedBand.pm
 t/lib/MySchema/Manager.pm
 t/lib/MySchema/Master.pm
 t/lib/MySchema/Note.pm
@@ -127,6 +129,7 @@ t/update/basic_update.t
 t/update/belongs_to.t
 t/update/belongs_to_combobox.t
 t/update/belongs_to_create.t
+t/update/belongs_to_create_required.t
 t/update/belongs_to_select.t
 t/update/belongs_to_select.yml
 t/update/belongs_to_select_two.yml
@@ -186,6 +189,8 @@ t/update/nested_create_checkbox.t
 t/update/nested_name_accessor.t
 t/update/nested_repeatable_write.t
 t/update/nested_repeatable_write.yml
+t/update/null_if_empty.t
+t/update/null_if_empty.yml
 t/update/opt_accessor.t
 t/update/opt_accessor.yml
 t/update/opt_accessor_nested.t

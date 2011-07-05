@@ -9,7 +9,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 1.00'
+generated_by: 'Module::Install version 0.91'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,12 +23,12 @@ no_index:
 requires:
   DBD::SQLite: 0
   DBIx::Class: 0.08108
-  HTML::FormFu: 0.09000
+  HTML::FormFu: 0.09001
   List::MoreUtils: 0
   Task::Weaken: 0
   YAML::Syck: 0
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-  repository: http://html-formfu.googlecode.com/svn/trunk/HTML-FormFu-Model-DBIC
-version: 0.09000
+  repository: git://github.com/fireartist/HTML-FormFu-Model-DBIC.git
+version: 0.0.09001-TRIAL

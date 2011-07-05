@@ -9,7 +9,7 @@ use Scalar::Util qw( blessed );
 use Storable qw( dclone );
 use Carp qw( croak );
 
-our $VERSION = '0.09000';
+our $VERSION = '0.09001';
 $VERSION = eval $VERSION;
 
 sub options_from_model {
@@ -369,11 +369,33 @@ sub update {
     my @rels = $rs->relationships;
     my @cols = $rs->columns;
 
+    # check for belongs_to relationships with a required foreign key
+    my (@belongs_to_rels, @other_rels);
+
+    foreach my $rel (@rels) {
+        # 'fk_columns' is set for belong_to rels in DBIx::Class::Relationship::BelongsTo
+        my @fk_columns = keys %{ $dbic->relationship_info($rel)->{attrs}{fk_columns} };
+
+        if (@fk_columns) {
+            push @belongs_to_rels, $rel;
+        } else {
+            push @other_rels, $rel;
+        }
+    }
+
+    # add belongs_to rels before insert
+    if (@belongs_to_rels) {
+        # tell _save_relationships not to update $dbic yet, just add the rels
+        my %attrs = ( %$attrs, no_update => 1 );
+        _save_relationships( $self, $base, $dbic, $form, $rs, \%attrs, \@belongs_to_rels );
+    }
+
+
     _save_columns( $base, $dbic, $form ) or return;
 
     $dbic->update_or_insert;
 
-    _save_relationships( $self, $base, $dbic, $form, $rs, $attrs, \@rels );
+    _save_relationships( $self, $base, $dbic, $form, $rs, $attrs, \@other_rels );
 
     _save_multi_value_fields_many_to_many( $base, $dbic, $form, $attrs, \@rels,
         \@cols );
@@ -462,7 +484,7 @@ sub _save_relationships {
                 } );
             unless ( $dbic->$rel ) {
                 $dbic->$rel($target);
-                $dbic->update;
+                $dbic->update unless $attrs->{no_update};
             }
         }
         elsif ( defined $multi_value ) {
@@ -738,9 +760,9 @@ sub _fix_value {
     my $data_type   = $col_info->{data_type} || '';
 
     if ( defined $value ) {
-        if ( (     $is_nullable
-                && $data_type =~ m/^timestamp|date|int|float|numeric/i
-            )
+        if ( ( (     $is_nullable
+                  && $data_type =~ m/^timestamp|date|int|float|numeric/i
+            ) or $field->model_config->{null_if_empty} )
 
             # comparing to '' does not work for inflated objects
             && !ref $value 
@@ -1492,6 +1514,14 @@ The following items are supported as C<model_config> options on form fields.
 If set, C<accessor> will be used as a method-name accessor on the
 C<DBIx::Class> row object, instead of using the field name.
 
+=item ignore_if_empty
+
+If the submitted value is blank, no attempt will be made to save it to the database.
+
+=item null_if_empty
+
+If the submitted value is blank, save it as NULL to the database. Normally an empty string is saved as NULL when its corresponding field is numeric, and as an empty string when its corresponding field is a text field. This option is useful for changing the default behavior for text fields. 
+
 =item delete_if_empty
 
 Useful for editing a "might_have" related row containing only one field.
@@ -1773,20 +1803,12 @@ Please submit bugs / feature requests to
 L<http://code.google.com/p/html-formfu/issues/list> (preferred) or 
 L<http://rt.perl.org>.
 
-=head1 SUBVERSION REPOSITORY
+=head1 GITHUB REPOSITORY
 
-The publicly viewable subversion code repository is at 
-L<http://html-formfu.googlecode.com/svn/trunk/HTML-FormFu-Model-DBIC>.
+This module's sourcecode is maintained in a git repository at
+L<git://github.com/fireartist/HTML-FormFu-Model-DBIC.git>
 
-If you wish to contribute, you'll need a GMAIL email address. Then just 
-ask on the mailing list for commit access.
-
-If you wish to contribute but for some reason really don't want to sign up 
-for a GMAIL account, please post patches to the mailing list (although  
-you'll have to wait for someone to commit them). 
-
-If you have commit permissions, use the HTTPS repository url: 
-L<https://html-formfu.googlecode.com/svn/trunk/HTML-FormFu-Model-DBIC>
+The project page is L<https://github.com/fireartist/HTML-FormFu-Model-DBIC>
 
 =head1 SEE ALSO
 

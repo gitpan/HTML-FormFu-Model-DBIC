@@ -393,6 +393,17 @@ CONFIGURATION
         If set, "accessor" will be used as a method-name accessor on the
         "DBIx::Class" row object, instead of using the field name.
 
+    ignore_if_empty
+        If the submitted value is blank, no attempt will be made to save it
+        to the database.
+
+    null_if_empty
+        If the submitted value is blank, save it as NULL to the database.
+        Normally an empty string is saved as NULL when its corresponding
+        field is numeric, and as an empty string when its corresponding
+        field is a text field. This option is useful for changing the
+        default behavior for text fields.
+
     delete_if_empty
         Useful for editing a "might_have" related row containing only one
         field.
@@ -640,19 +651,12 @@ BUGS
     <http://code.google.com/p/html-formfu/issues/list> (preferred) or
     <http://rt.perl.org>.
 
-SUBVERSION REPOSITORY
-    The publicly viewable subversion code repository is at
-    <http://html-formfu.googlecode.com/svn/trunk/HTML-FormFu-Model-DBIC>.
+GITHUB REPOSITORY
+    This module's sourcecode is maintained in a git repository at
+    <git://github.com/fireartist/HTML-FormFu-Model-DBIC.git>
 
-    If you wish to contribute, you'll need a GMAIL email address. Then just
-    ask on the mailing list for commit access.
-
-    If you wish to contribute but for some reason really don't want to sign
-    up for a GMAIL account, please post patches to the mailing list
-    (although you'll have to wait for someone to commit them).
-
-    If you have commit permissions, use the HTTPS repository url:
-    <https://html-formfu.googlecode.com/svn/trunk/HTML-FormFu-Model-DBIC>
+    The project page is
+    <https://github.com/fireartist/HTML-FormFu-Model-DBIC>
 
 SEE ALSO
     HTML::FormFu, DBIx::Class, Catalyst::Controller::HTML::FormFu

@@ -1,3 +1,10 @@
+0.09001 2011-07-05
+
+    - update now properly handles required belongs_to relationships
+    
+    - added null_if_empty option for fields
+
+
 0.09000 2011-03-29
 
     - Updated to work with HTML-FormFu 0.09000
