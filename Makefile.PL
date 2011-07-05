@@ -7,7 +7,7 @@ if ( -e 'MANIFEST.SKIP' ) {
 name 'HTML-FormFu-Model-DBIC';
 perl_version '5.008001';
 all_from 'lib/HTML/FormFu/Model/DBIC.pm';
-version '0.0.09001-TRIAL';
+version '0.09001-TRIAL';
 
 repository 'git://github.com/fireartist/HTML-FormFu-Model-DBIC.git';
 
