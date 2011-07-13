@@ -1,9 +1,12 @@
+0.09002 2011-07-13
+
+    - Fix: world-writable directories in CPAN distro
+    
 0.09001 2011-07-05
 
     - update now properly handles required belongs_to relationships
     
     - added null_if_empty option for fields
-
 
 0.09000 2011-03-29
 
