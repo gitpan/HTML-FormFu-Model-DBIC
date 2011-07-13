@@ -31,4 +31,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: git://github.com/fireartist/HTML-FormFu-Model-DBIC.git
-version: 0.09001-TRIAL
+version: 0.09001
