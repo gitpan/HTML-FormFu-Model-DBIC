@@ -12,6 +12,8 @@ lib/HTML/FormFu/Model/DBIC.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+MYMETA.json
+MYMETA.yml
 README
 t/constraints/dbic_unique.t
 t/constraints/dbic_unique.yml
@@ -19,6 +21,8 @@ t/constraints/dbic_unique_column.yml
 t/constraints/dbic_unique_id_field.yml
 t/constraints/dbic_unique_method.yml
 t/constraints/dbic_unique_others.yml
+t/constraints/dbic_unique_repeatable_id_field.t
+t/constraints/dbic_unique_repeatable_id_field.yml
 t/create/basic.t
 t/create/basic.yml
 t/default_values/basic.t
@@ -116,6 +120,8 @@ t/options_from_model/condition_from_stash_combobox_complex.t
 t/options_from_model/condition_from_stash_complex.t
 t/options_from_model/constraint_autoset.t
 t/options_from_model/constraint_autoset.yml
+t/options_from_model/enum_select.t
+t/options_from_model/enum_select.yml
 t/options_from_model/has_many_repeatable_select.t
 t/options_from_model/has_many_repeatable_select.yml
 t/options_from_model/many_to_many_select.t
@@ -130,6 +136,8 @@ t/update/belongs_to.t
 t/update/belongs_to_combobox.t
 t/update/belongs_to_create.t
 t/update/belongs_to_create_required.t
+t/update/belongs_to_lookup_table_combobox.t
+t/update/belongs_to_lookup_table_combobox.yml
 t/update/belongs_to_select.t
 t/update/belongs_to_select.yml
 t/update/belongs_to_select_two.yml

@@ -5,11 +5,12 @@ use base 'HTML::FormFu::Model';
 
 use HTML::FormFu::Util qw( _merge_hashes );
 use List::MoreUtils qw( none notall );
+use List::Util qw( first );
 use Scalar::Util qw( blessed );
 use Storable qw( dclone );
 use Carp qw( croak );
 
-our $VERSION = '0.09002';
+our $VERSION = '0.09010';
 $VERSION = eval $VERSION;
 
 sub options_from_model {
@@ -23,6 +24,21 @@ sub options_from_model {
     my $label_col  = $attrs->{label_column};
     my $condition  = $attrs->{condition};
     my $attributes = $attrs->{attributes} || {};
+
+    my $enum_col =
+        first {
+            lc( $base->name ) eq lc($_);
+        }
+        grep {
+            my $data_type = $source->column_info($_)->{data_type};
+            defined $data_type && $data_type =~ /enum/i
+        } $source->columns;
+
+    if ( defined $enum_col ) {
+        return map {
+            [ $_, $_ ]
+        } @{ $source->column_info($enum_col)->{extra}{list} };
+    }
 
     if ( !defined $id_col ) {
         ($id_col) = $source->primary_columns;
@@ -57,18 +73,17 @@ sub options_from_model {
 
     my $result = $resultset->search( $condition, $attributes );
 
-    my @defaults = $result->all;
+    my @defaults   = $result->all;
+    my $has_column = $source->has_column($label_col);
 
     if ( $attrs->{localize_label} ) {
         @defaults = map {
             {   value     => $_->get_column($id_col),
-                label_loc => $_->get_column($label_col),
+                label_loc => $has_column ? $_->get_column($label_col) : $_->$label_col,
             }
         } @defaults;
     }
     else {
-        my $has_column = $source->has_column($label_col);
-
         @defaults = map { [
                 $_->get_column($id_col),
                 $has_column ? $_->get_column($label_col) : $_->$label_col,
@@ -446,6 +461,7 @@ sub _save_relationships {
 
         my ($block) = grep { !$_->is_field } @elements;
         my ($multi_value) = grep { $_->is_field && $_->multi_value } @elements;
+        my ($combo) = grep { $_->isa('HTML::FormFu::Element::ComboBox') } @elements;
 
         next if !defined $block && !defined $multi_value;
         next if !$form->valid($rel);
@@ -458,6 +474,10 @@ sub _save_relationships {
 
             _save_has_many( $self, $dbic, $form, $rs, $block, $rel, $attrs );
 
+        }
+        elsif ( defined $combo ) {
+
+            _save_combobox( $self, $base, $dbic, $form, $rs, $combo, $rel, $attrs );
         }
         elsif ( defined $block && ref $params eq 'HASH' ) {
             # It seems that $dbic->$rel must be called otherwise the following
@@ -569,6 +589,41 @@ sub _save_relationships {
                 } );
         }
     }
+}
+
+sub _save_combobox {
+    my ( $self, $base, $dbic, $form, $rs, $combo, $rel, $attrs ) = @_;
+    
+    my $select = $combo->get_field({ type => 'Select' });
+    my $text   = $combo->get_field({ type => 'Text' });
+    
+    my $select_value = $form->param( $select->nested_name );
+    my $text_value   = $form->param( $text->nested_name );
+    
+    my $target_rs = $dbic->result_source->related_source( $rel )->resultset;
+    my $target;
+    
+    if ( defined $select_value && length $select_value ) {
+        my $pk_name = $combo->model_config->{select_column};
+        
+        $target = $target_rs->find(
+            {
+                $pk_name => $select_value,
+            },
+        );
+    }
+    else {
+        my $column_name = $combo->model_config->{text_column};
+        
+        $target = $target_rs->create(
+            {
+                $column_name => $text_value,
+            },
+        );
+    }
+    
+    $dbic->set_from_related( $rel, $target );
+    $dbic->update;
 }
 
 # Copied from DBIx::Class::ResultSource
@@ -1355,6 +1410,10 @@ Repeatable block were created.
 When the form is submitted, this value is used during C<< $form->process >>
 to ensure the form is rebuilt with the correct number of repetitions.
 
+To allow the user to add new related rows, either C<empty_rows> or
+C<new_rows_max> must be set - see L</"Config options for Repeatable blocks">
+below.
+
 For the following DBIx::Class schemas:
 
     package MySchema::Book;
@@ -1394,7 +1453,7 @@ For the following DBIx::Class schemas:
     
     1;
 
-A suitable form for this would be:
+A suitable form for this might be:
 
     elements:
       - type: Text
@@ -1406,12 +1465,36 @@ A suitable form for this would be:
       - type: Repeatable
         nested_name: review
         counter_name: review_count
+        model_config:
+          empty_rows: 1
         elements:
           - type: Hidden
             name: book
           
           - type: Textarea
             name: review_text
+
+=head2 belongs_to relationships
+
+Belongs-to relationships can be edited / created with a ComboBox element.
+If the user selects a value with the Select field, the belongs-to will be set
+to an already-existing row in the related table.
+If the user enters a value into the Text field, the belongs-to will be set
+using a newly-created row in the related table.
+
+    elements:
+      - type: ComboBox
+        name: author
+        model_config:
+          resultset: Author
+          select_column: id
+          text_column: name
+
+The element name should match the relationship name.
+C<< $field->model_config->{select_column} >> should match the related primary
+column.
+C<< $field->model_config->{text_column} >> should match the related text
+column.
 
 =head2 many_to_many selection
 
@@ -1727,9 +1810,12 @@ Is comparable to:
 You can set C<attributes>, which will be passed as the 2nd argument to
 L<DBIx::Class::ResultSet/search>.
 
+=head3 ENUM Column Type
 
-
-
+If the field name matches (case-insensitive) a column name with type 'ENUM'
+and the Schema contains enum values in
+C<< $resultset->column_info($name)->{extra}{list} >>, the field's options
+will be populated with the enum values.
 
 =head1 FAQ
 

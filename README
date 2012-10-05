@@ -250,6 +250,10 @@ BUILDING FORMS
     during "$form->process" to ensure the form is rebuilt with the correct
     number of repetitions.
 
+    To allow the user to add new related rows, either "empty_rows" or
+    "new_rows_max" must be set - see "Config options for Repeatable blocks"
+    below.
+
     For the following DBIx::Class schemas:
 
         package MySchema::Book;
@@ -289,7 +293,7 @@ BUILDING FORMS
     
         1;
 
-    A suitable form for this would be:
+    A suitable form for this might be:
 
         elements:
           - type: Text
@@ -301,12 +305,34 @@ BUILDING FORMS
           - type: Repeatable
             nested_name: review
             counter_name: review_count
+            model_config:
+              empty_rows: 1
             elements:
               - type: Hidden
                 name: book
           
               - type: Textarea
                 name: review_text
+
+  belongs_to relationships
+    Belongs-to relationships can be edited / created with a ComboBox
+    element. If the user selects a value with the Select field, the
+    belongs-to will be set to an already-existing row in the related table.
+    If the user enters a value into the Text field, the belongs-to will be
+    set using a newly-created row in the related table.
+
+        elements:
+          - type: ComboBox
+            name: author
+            model_config:
+              resultset: Author
+              select_column: id
+              text_column: name
+
+    The element name should match the relationship name.
+    "$field->model_config->{select_column}" should match the related primary
+    column. "$field->model_config->{text_column}" should match the related
+    text column.
 
   many_to_many selection
     To select / deselect rows from a "many_to_many" relationship, you must
@@ -588,6 +614,12 @@ CONFIGURATION
 
     You can set "attributes", which will be passed as the 2nd argument to
     "search" in DBIx::Class::ResultSet.
+
+   ENUM Column Type
+    If the field name matches (case-insensitive) a column name with type
+    'ENUM' and the Schema contains enum values in
+    "$resultset->column_info($name)->{extra}{list}", the field's options
+    will be populated with the enum values.
 
 FAQ
   Add extra values not in the form
