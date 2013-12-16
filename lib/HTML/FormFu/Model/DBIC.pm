@@ -1,4 +1,7 @@
 package HTML::FormFu::Model::DBIC;
+{
+  $HTML::FormFu::Model::DBIC::VERSION = '1.00';
+}
 use strict;
 use warnings;
 use base 'HTML::FormFu::Model';
@@ -9,9 +12,6 @@ use List::Util qw( first );
 use Scalar::Util qw( blessed );
 use Storable qw( dclone );
 use Carp qw( croak );
-
-our $VERSION = '0.09010';
-$VERSION = eval $VERSION;
 
 sub options_from_model {
     my ( $self, $base, $attrs ) = @_;
@@ -955,6 +955,8 @@ sub _save_multi_value_fields_many_to_many {
             my @rows;
 
             my $config = $field->model_config;
+
+            next if $config->{read_only};
 
             my ($pk) = $config->{default_column}
                 || $related->result_source->primary_columns;
