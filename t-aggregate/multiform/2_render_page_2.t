@@ -14,17 +14,16 @@ if ($@) {
     die 'Crypt::CBC required';
 }
 
-eval { require YAML::Syck };
+eval { require YAML::XS };
 if ($@) {
-    plan skip_all => 'YAML::Syck required';
-    die 'YAML::Syck required';
+    plan skip_all => 'YAML::XS required';
+    die 'YAML::XS required';
 }
 
 plan tests => 7;
 
-use Crypt::CBC ();
 use Storable qw/ thaw /;
-use YAML::Syck qw/ LoadFile /;
+YAML::XS->import(qw( LoadFile ));
 
 my $yaml_file = 't-aggregate/multiform/multiform.yml';
 

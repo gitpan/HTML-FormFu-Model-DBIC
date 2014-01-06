@@ -1,6 +1,6 @@
 package HTML::FormFu::Constraint::DBIC::Unique;
 {
-  $HTML::FormFu::Constraint::DBIC::Unique::VERSION = '1.00';
+  $HTML::FormFu::Constraint::DBIC::Unique::VERSION = '1.01';
 }
 use Moose;
 

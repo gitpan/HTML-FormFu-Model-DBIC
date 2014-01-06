@@ -34,7 +34,7 @@ my %WriteMakefileArgs = (
     "Test::Aggregate::Nested" => "0.371",
     "Test::More" => "0.99"
   },
-  "VERSION" => "1.00",
+  "VERSION" => "1.01",
   "test" => {
     "TESTS" => "t/*.t"
   }
