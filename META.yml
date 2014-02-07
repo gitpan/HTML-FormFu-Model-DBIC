@@ -6,12 +6,11 @@ build_requires:
   DateTime::Format::SQLite: 0
   Locale::Maketext: 0
   SQL::Translator: 0
-  Test::Aggregate::Nested: 0.371
   Test::More: 0.99
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.133380'
+generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.132830'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -26,5 +25,5 @@ requires:
   Task::Weaken: 0
   perl: 5.008001
 resources:
-  repository: git://github.com/fireartist/HTML-FormFu-Model-DBIC.git
-version: 1.01
+  repository: https://github.com/fireartist/HTML-FormFu-Model-DBIC.git
+version: 1.02

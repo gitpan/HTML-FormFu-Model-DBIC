@@ -1,7 +1,5 @@
 package HTML::FormFu::Model::DBIC;
-{
-  $HTML::FormFu::Model::DBIC::VERSION = '1.01';
-}
+$HTML::FormFu::Model::DBIC::VERSION = '1.02';
 use strict;
 use warnings;
 use base 'HTML::FormFu::Model';

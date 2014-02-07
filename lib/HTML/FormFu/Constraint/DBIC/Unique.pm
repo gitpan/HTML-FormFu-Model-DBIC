@@ -1,8 +1,7 @@
 package HTML::FormFu::Constraint::DBIC::Unique;
-{
-  $HTML::FormFu::Constraint::DBIC::Unique::VERSION = '1.01';
-}
+$HTML::FormFu::Constraint::DBIC::Unique::VERSION = '1.02';
 use Moose;
+use MooseX::Attribute::Chained;
 
 extends 'HTML::FormFu::Constraint';
 
