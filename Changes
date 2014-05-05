@@ -1,6 +1,6 @@
-1.02 2014-02-07
+2.00 2014-05-05
 
-    - Fix error "Implicit use of the Chained trait is deprecated"
+    - switch from MooseX::Attribute::Chained to MooseX::Attribute::FormFuChained
 
 1.01 2014-01-06
 

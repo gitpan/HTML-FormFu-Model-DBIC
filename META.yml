@@ -3,27 +3,27 @@ abstract: 'Integrate HTML::FormFu with DBIx::Class'
 author:
   - 'Carl Franks <cpan@fireartist.com>'
 build_requires:
-  DateTime::Format::SQLite: 0
-  Locale::Maketext: 0
-  SQL::Translator: 0
-  Test::More: 0.99
+  DateTime::Format::SQLite: '0'
+  Locale::Maketext: '0'
+  SQL::Translator: '0.11016'
+  Test::More: '0.99'
 configure_requires:
-  ExtUtils::MakeMaker: 6.30
+  ExtUtils::MakeMaker: '6.30'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.015, CPAN::Meta::Converter version 2.140640'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: HTML-FormFu-Model-DBIC
 requires:
-  DBD::SQLite: 0
-  DBIx::Class: 0.08108
-  HTML::FormFu: 1.00
-  List::MoreUtils: 0
-  Storable: 0
-  Task::Weaken: 0
-  perl: 5.008001
+  DBD::SQLite: '0'
+  DBIx::Class: '0.08108'
+  HTML::FormFu: '2.00'
+  List::MoreUtils: '0'
+  Storable: '0'
+  Task::Weaken: '0'
+  perl: '5.008001'
 resources:
-  repository: https://github.com/fireartist/HTML-FormFu-Model-DBIC.git
-version: 1.02
+  repository: git://github.com/fireartist/HTML-FormFu-Model-DBIC.git
+version: '2.00'
